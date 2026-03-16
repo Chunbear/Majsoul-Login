@@ -3,6 +3,11 @@ on:
   workflow_dispatch:
   schedule: #5:00
    - cron: '30 21 * * *'
+
+# 添加环境变量解决 Node.js 20 废弃警告
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   login:
     name: Majsoul-Login
@@ -10,6 +15,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5  # 使用最新版本的 setup-python action
+        with:
+          python-version: '3.x'  # 使用最新的 Python 3 版本
+          cache: 'pip'  # 缓存 pip 依赖，加速构建
 
       - name: Install Selenium
         run: pip install selenium==4.17.2
